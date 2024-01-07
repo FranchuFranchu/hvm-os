@@ -19,7 +19,7 @@ BOOT_DRIVE = uefi.img
 
 .PHONY: clean qemu
 
-efi/uefi.efi efi/uefi.debug: $(wildcard src/*)
+efi/uefi.efi efi/uefi.debug: $(wildcard src/**/*) $(wildcard src/*)
 	fasm src/uefi.asm $(EFI) -s efi/uefi.debug
 
 clean:
