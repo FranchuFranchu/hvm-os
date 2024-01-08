@@ -19,20 +19,30 @@ macro print_msg msg,UL {
   UL#.link:
 }
 
+section '.text' executable readable
 include 'inc/uefi.inc'
-include 'hvm.inc'
+include 'hvm/macros.inc'
+include 'hvm/alloc.inc'
+include 'hvm/data.inc'
+include 'hvm/interact.inc'
+include 'hvm/log.inc'
+include 'hvm/macros.inc'
+include 'hvm/redex_ring.inc'
+include 'hvm/worker.inc'
 include 'string.inc'
 
 section '.text' executable readable
 
 
+
+k.shutdown: 
+  uefi_call_wrapper RuntimeServices, ResetSystem, 2, EFI_SUCCESS, 0, 0
+
 main:
   
   InitializeLib
-  
-  mov rax, [sample_data.4.1]
-  add rax, sample_data.4.1
-  call print_rax
+    
+  section '.text' executable readable
   
   sub rsp, 8
   uefi_call_wrapper ConOut, OutputString, ConOut, string

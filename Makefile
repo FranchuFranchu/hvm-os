@@ -13,22 +13,22 @@ SRC = $(wildcard $(SRC_DIR)/*.asm)
 
 OBJ = $(SRC:$(SRC_DIR)/%.asm=$(OBJ_DIR)/%.obj)
 
-EFI = $(EFI_DIR)/uefi.efi
+EFI = $(EFI_DIR)/main.efi
 BIOS = $(wildcard $(INC_DIR)/*.bios)
-BOOT_DRIVE = uefi.img
+BOOT_DRIVE = main.img
 
 .PHONY: clean qemu
 
-efi/uefi.efi efi/uefi.debug: $(wildcard src/**/*) $(wildcard src/*)
-	fasm src/uefi.asm $(EFI) -s efi/uefi.debug
+efi/main.efi efi/main.debug: $(wildcard src/**/*) $(wildcard src/*)
+	fasm src/main.asm $(EFI) -s efi/main.debug
 
 clean:
 	rm -f $(OBJ) $(BOOT_DRIVE) $(EFI)
 
-qemu: uefi.img
+qemu: main.img
 	qemu-system-x86_64 -bios $(BIOS) -drive file=$(BOOT_DRIVE),format=raw -nographic -net none
 
-uefi.img: efi/uefi.efi efi/uefi.debug
+main.img: efi/main.efi efi/main.debug
 ifeq (, $(shell which mkfs.vfat))
 	$(error "Can't find mkfs.vfat, consider doing sudo apt install dosfstools")
 endif
