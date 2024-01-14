@@ -147,20 +147,20 @@ hvm_interact:
 	mov rdx, [rsp+48]
 	mov r8, [rsp+0]
 	hvm_port_get_port_1 r8
-	or r8, 1 or 8
+	or r8, hvm_tag_AUX or 8
 	mov r9, [rsp+16]
 	hvm_port_get_port_1 r9
-	or r9, 1 or 8
+	or r9, hvm_tag_AUX or 8
 	call hvm_link_port_port
 
 	mov rcx, [rsp+56]
 	mov rdx, [rsp+48]
 	mov r8, [rsp+0]
 	hvm_port_get_port_1 r8
-	or r8, 1
+	or r8, hvm_tag_AUX
 	mov r9, [rsp+24]
 	hvm_port_get_port_1 r9
-	or r9, 1 or 8
+	or r9, hvm_tag_AUX or 8
 	call hvm_link_port_port
 
 	
@@ -168,10 +168,10 @@ hvm_interact:
 	mov rdx, [rsp+48]
 	mov r8, [rsp+8]
 	hvm_port_get_port_1 r8
-	or r8, 1 or 8
+	or r8, hvm_tag_AUX or 8
 	mov r9, [rsp+16]
 	hvm_port_get_port_1 r9
-	or r9, 1
+	or r9, hvm_tag_AUX
 	call hvm_link_port_port
 
 	
@@ -179,10 +179,10 @@ hvm_interact:
 	mov rdx, [rsp+48]
 	mov r8, [rsp+8]
 	hvm_port_get_port_1 r8
-	or r8, 1
+	or r8, hvm_tag_AUX
 	mov r9, [rsp+24]
 	hvm_port_get_port_1 r9
-	or r9, 1
+	or r9, hvm_tag_AUX
 	call hvm_link_port_port
 	add rsp, 64
 

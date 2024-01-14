@@ -445,15 +445,37 @@ impl<R: Iterator<Item = char>, W: std::io::Write> State<R, W> {
         let redex_start = mem.len() as u64;
         let redex_amount = redex.len() as u64;
 
+        // Create root port
         let root_addr = root_addr.unwrap();
-        let root_addr_num: u64 = root_addr.node * 16 + 16 + (if root_addr.port == 2 { 8 } else { 0 }) + 2;
+        
+        let mut root_port = if root_addr.port == 0 {
+            let node = &self.node_data[root_addr.node as usize];
+            Port {
+                is_primary: node.primary,
+                is_lazy: node.lazy,
+                is_vanilla: node.vanilla,
+                target: root_addr.clone(),
+                label: node.label,
+            }
+        } else {
+            Port {
+                is_primary: false,
+                is_vanilla: true,
+                is_lazy: false,
+                target: root_addr.clone(),
+                label: 0,
+            }
+        };
         let redex_num: u64 = if redex_amount == 0 {
             0
         } else {
             redex_start * 16 + redex_amount * 16 * 3 - 8
         };
+
+
+        let root_port_num = root_port.to_bits() + 16;
         self.out_stream.write(
-            &root_addr_num.to_le_bytes(),
+            &root_port_num.to_le_bytes(),
         ).unwrap();
         self.out_stream.write(
             &redex_num.to_le_bytes(),

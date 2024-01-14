@@ -39,9 +39,15 @@ hvm_init:
   sub rcx, hvm_worker.size
   mov [rdx+hvm_worker.area_size], rcx
   mov rcx, [rax+8]
+  cmp rcx, 0
+  je .no_redexes
   add rcx, rax
   add rcx, 8
   mov [rdx+hvm_worker.redex], rcx
+  jmp @f
+.no_redexes:
+  mov [rdx+hvm_worker.redex], 0
+@@:
   add [rdx+hvm_worker.alloc_next], hvm_binary_code.end-hvm_binary_code
   mov [rdx+hvm_worker.alloc_head], 0
   mov [rdx+hvm_worker.worker_id], 0
