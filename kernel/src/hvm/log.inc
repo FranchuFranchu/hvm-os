@@ -177,18 +177,18 @@ dq .aux_text
 dq .ctr_text
 dq .dat_text
 .red_text: du "RED", 0
-.aux_text: du "AUX", 0
-.ctr_text: du "CTR", 0
-.dat_text: du "DAT", 0
+.aux_text: du "EXT", 0
+.ctr_text: du "AUX", 0
+.dat_text: du "CTR", 0
 .special_value_texts:
 dq .free_text
 dq .lock_text
 dq .gone_text
 dq .eras_text
 .free_text: du "FREE", 0
-.lock_text: du "LOCK", 0
-.gone_text: du "GONE", 0
 .eras_text: du "ERAS", 0
+.gone_text: du "GONE", 0
+.lock_text: du "LOCK", 0
 .port_texts:
 db '1'
 db '2'

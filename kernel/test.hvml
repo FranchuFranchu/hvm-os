@@ -1,0 +1,8 @@
+data State = (SC f)
+data List = (Cons a list) | Nil
+bindS (SC act) k = (SC (λs let (a, b) = s; a))
+bind0S m k = (bindS m λ* k)
+
+get = λx x
+main = (Cons (bind0S get get)
+Nil)

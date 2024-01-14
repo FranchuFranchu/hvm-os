@@ -23,6 +23,8 @@ section '.text' executable readable
 include 'inc/uefi.inc'
 include 'hvm/macros.inc'
 include 'hvm/alloc.inc'
+include 'ext/welcome.inc'
+include 'ext/readback.inc'
 include 'hvm/data.inc'
 include 'hvm/interact.inc'
 include 'hvm/log.inc'
@@ -55,6 +57,9 @@ main:
   mov rcx, rbx
 
   mov [rsp], rcx
+
+  call ext_welcome
+
 .loopy:
   mov rcx, [rsp]
   mov rdx, [rcx+hvm_worker.alloc_next]

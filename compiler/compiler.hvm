@@ -1,0 +1,68 @@
+data Bool = True | False
+data VarData = (VarData.new name to_binder to_user binder_count user_count)
+data State = (State.new output label_index node_index vars)
+// Each variable data has enough data for:
+// Connecting a new binder
+// Connecting a new user
+// to_binder
+// to_user
+// is_bound
+// is_used
+data Addr = (Addr.new node port)
+data Port = (Port.new interacting vanilla target)
+data ParseResult = (Ok state ) | (Err err)
+// State has String -> U60
+data Option = (Some val) | None
+// CharStream: T -> ((Option U60) -> T -> T) -> T
+data List = (Cons head tail) | Nil
+// Unconnect wire: 
+// λ$x (Wire $x) 
+// λ$y (Wire $y)
+
+connect_wires a b = 
+	let {y0 y1} = $y;
+	(λ$x
+	let {x0 x1} = $x;
+	(λ$y
+	x0 (a x1)) (b y0))
+
+ToBool 0 = F
+ToBool +p = T
+U60.if 0 t f = f
+U60.if +p t f = t
+
+parse_name state (SCons head tail) cont = (U60.if 
+	(+ (* (>= head 'A') (<= head 'Z'))
+	(+ (* (>= head '0') (<= head '9'))
+	(* (>= head 'a') (<= head 'z'))))
+	(parse_name state tail λx (cont (SCons head x)))
+	(cont current)
+)
+parse_name state SNil cont = (cont SNil)
+
+String.equal (SCons head tail) SNil = F
+String.equal SNil (SCons head tail)  = F
+String.equal SNil SNil = T
+String.equal (SCons h1 t1) (SCons h2 t2) = (U60.if (== h1 h2) (String.equal t1 t2) F)
+
+parse_term state (SCons head tail) binder cont = (U60.if (== head '@')
+	// Parse lambda
+	(Err "Unimplemented")
+	// Otherwise, it's a name
+	(parse_name state (SCons head tail) λname
+		match (String.equal name "") {
+			T: (Err "not valid")
+			F: match (String.equal name "let") {
+				T: (Err "todo") // Parse a let
+				F: match (String.equal name "ask") {
+					T: (Err "todo")
+					F: (Err "todo")// Parse a var
+				}
+			}
+		}
+	)
+)
+parse_term state SNil binder cont =  (Err ":(")
+
+main =	
+	(connect_wires λ$x $x λ$y $y)

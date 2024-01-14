@@ -21,7 +21,7 @@ hvm_interact:
 	and r10, hvm_port_TAG_MASK
 	or rax, r10
 
-	cmp rax, hvm_tag_CTR or hvm_tag_CTR shl 2
+	cmp rax, hvm_tag_CTR or (hvm_tag_CTR shl 2)
 	je .ctr_ctr
 	; Undefined interaction
 	print_msg 'Invalid interaction',.ii_msg
@@ -38,17 +38,18 @@ hvm_interact:
 .annihilate:
 	hvm_port_get_target r8
 	hvm_port_get_target r9
+	push r8
+	push r9
+	push r8
+	push r9
 
-	push r8
-	push r9
-	push r8
-	push r9
 
 	hvm_get_port_1 r8, rax
 	mov r8, rax
 	hvm_get_port_1 r9, rax
 	mov r9, rax
 	call hvm_link_port_port
+
 
 	pop r9
 	pop r8
@@ -207,14 +208,14 @@ hvm_link_port_port:
 	ret
 .aux:
 	mov r10, r8
-	and r10, 2
+	and r10, 1
 	jnz @f
 	mov r10, r8
 	hvm_port_get_target r10
 	hvm_set_port r10, r9
 @@:
 	mov r10, r9
-	and r10, 2
+	and r10, 1
 	jnz @f
 
 	mov rax, r9

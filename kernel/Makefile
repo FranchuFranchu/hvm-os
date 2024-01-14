@@ -22,6 +22,9 @@ BOOT_DRIVE = main.img
 efi/main.efi efi/main.debug: $(wildcard src/**/*) $(wildcard src/*)
 	fasm src/main.asm $(EFI) -s efi/main.debug
 
+src/kernel.bin: src/kernel.la ../compiler/target/debug/inet-la 
+	../compiler/target/debug/inet-la src/kernel.la src/kernel.bin
+
 clean:
 	rm -f $(OBJ) $(BOOT_DRIVE) $(EFI)
 

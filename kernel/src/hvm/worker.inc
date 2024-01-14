@@ -26,9 +26,9 @@ hvm_init:
   mov rdx, rax
   add rax, hvm_worker.size
   call print_rax
-  mov rsi, hvm_data
+  mov rsi, hvm_binary_code
   mov rdi, rax
-  mov rcx, hvm_data_end-hvm_data
+  mov rcx, hvm_binary_code.end-hvm_binary_code
   rep movsq
   add rsp, 32
   ; Initialize the Worker struct
@@ -38,10 +38,11 @@ hvm_init:
   mov rcx, 8*4096
   sub rcx, hvm_worker.size
   mov [rdx+hvm_worker.area_size], rcx
-  mov rcx, rax
-  add rcx, hvm_data.6.1-hvm_data
+  mov rcx, [rax+8]
+  add rcx, rax
+  add rcx, 8
   mov [rdx+hvm_worker.redex], rcx
-  add [rdx+hvm_worker.alloc_next], hvm_data_end-hvm_data
+  add [rdx+hvm_worker.alloc_next], hvm_binary_code.end-hvm_binary_code
   mov [rdx+hvm_worker.alloc_head], 0
   mov [rdx+hvm_worker.worker_id], 0
   mov [rdx+hvm_worker.workers], 1
