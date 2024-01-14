@@ -12,12 +12,12 @@ hvm-os will work by running on top a kernel written in assembly (to make it poss
 
 ## Running 
 
-`make qemu` should do the trick in GNU/Linux systems. You might have to install a few packages. Furthermore, there's a prebuilt UEFI image in `main.img` which you can just place into an USB stick and run. (SECURITY ADVICE: DO NOT EXECUTE RANDOM FILES YOU FIND ON THE INTERNET, MUCH LESS PUT THEM INTO USB STICKS.)
+`make qemu` in `kernel` should do the trick in GNU/Linux systems. You might have to install a few packages. Furthermore, there's a prebuilt UEFI image in `main.img` which you can just place into an USB stick and run. (SECURITY ADVICE: DO NOT EXECUTE RANDOM FILES YOU FIND ON THE INTERNET, MUCH LESS PUT THEM INTO USB STICKS.)
 
 ## TO-DO list
 
 - [ ] Kernel implementation
-  - [ ] Basic inet implementation
+  - [X] Basic inet implementation
     - [X] Memory allocation
     - [X] Redex pushing/popping
     - [X] Annihilation/Commutation interactions
@@ -25,17 +25,17 @@ hvm-os will work by running on top a kernel written in assembly (to make it poss
     - [X] Print memory buffer
     - [ ] List active pairs
     - [ ] Print net as λ-term
-    - [ ] Tool to read hvm-lang code and output code to load into EFI
+    - [X] Tool to read hvm-like code and output code to load into EFI
     - [ ] Snapshots/Breakpoints
   - [ ] Multiprocessing
     - [ ] Atomic link() procedure
     - [ ] Query UEFI for processors
   - [ ] Interaction with environment
-    - [ ] DAT nodes
+    - [ ] EXT nodes
     - [ ] Limit functions 
       - [ ] Ensure provenance works well
     - [ ] Bracket and croissant DAT nodes? (feasible?)
-    - [ ] Research how wide IO API surface is
+    - [ ] Research how wide UEFI's IO API surface is
     - [ ] load_from_efi_file() function 
     - [ ] load_binary() function that loads binary HVM code
 - [ ] Userspace implementation
@@ -44,3 +44,7 @@ hvm-os will work by running on top a kernel written in assembly (to make it poss
   	- [ ] Write an assembler in HVM
   	- [ ] ???
   	- [ ] Profit?
+- [ ] Documentation and outreach
+  - [ ] Documentation
+    - [ ] Write explanation for most concepts used by this
+  - [ ] Post about this project on social media
