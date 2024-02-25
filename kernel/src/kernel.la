@@ -1,1 +1,2 @@
-(λK0.x λK0.y K0.x λK1.x λK1.y K1.x λK2.x λK.y K.x)
+
+(λx x λy y)

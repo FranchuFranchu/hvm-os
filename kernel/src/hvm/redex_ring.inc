@@ -14,21 +14,21 @@ hvm_redex_pop:
   cmp qword [rcx+hvm_worker.redex], 0
   je .no_redex
   mov rbx, [rcx+hvm_worker.redex]
-  hvm_get_port_2 rbx ,rdx
+  hvm_wire_load_port_2 rbx ,rdx
 
   ; Agent 1
-  hvm_get_port_1 rdx, rbx
+  hvm_wire_load_port_1 rdx, rbx
   push rbx
-  hvm_get_port_2 rdx, rbx
+  hvm_wire_load_port_2 rdx, rbx
 
   call hvm_free
 
   ; Agent 2
   mov rdx, rbx
 
-  hvm_get_port_1 rdx, rbx
+  hvm_wire_load_port_1 rdx, rbx
   push rbx
-  hvm_get_port_2 rdx, rbx
+  hvm_wire_load_port_2 rdx, rbx
 
   call hvm_free
 
@@ -38,7 +38,7 @@ hvm_redex_pop:
   mov rbx, [rdx]
   push rbx
 
-  hvm_get_port_2 rdx, rbx
+  hvm_wire_load_port_2 rdx, rbx
 
   push rdx
   call hvm_free
@@ -47,7 +47,7 @@ hvm_redex_pop:
   cmp rdx, [rcx+hvm_worker.redex]
   je .empty_ring
   mov rdx, [rcx+hvm_worker.redex]
-  hvm_set_port_2 rdx, rbx
+  hvm_wire_store_port_2 rdx, rbx
   ; Re-link the ring.
 
   pop rdx

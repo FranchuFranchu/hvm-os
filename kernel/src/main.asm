@@ -9,13 +9,16 @@ if $=$$
 end if
 
 
+macro print_msg_volatile msg,UL {
+  push_volatile
+  print_msg msg,UL
+  pop_volatile
+}
+
 macro print_msg msg,UL {
-  section '.text' executable readable
-  uefi_call_wrapper ConOut, OutputString, ConOut, UL#.dat
+  uefi_call_wrapper ConOut, OutputString, ConOut,  UL#.dat
   jmp UL#.link
-  section '.data' readable writable
-  UL#.dat: du msg, 0xd, 0, 0xa, 0, 0, 0, 61, 0
-  section '.text' executable readable
+  UL#.dat du msg, 0xd, 0xa, 0
   UL#.link:
 }
 
@@ -27,6 +30,7 @@ include 'ext/welcome.inc'
 include 'ext/readback.inc'
 include 'hvm/data.inc'
 include 'hvm/interact.inc'
+include 'hvm/link.inc'
 include 'hvm/log.inc'
 include 'hvm/macros.inc'
 include 'hvm/redex_ring.inc'
@@ -43,14 +47,10 @@ k.shutdown:
 main:
   
   InitializeLib
-    
-  section '.text' executable readable
+
   
   sub rsp, 8
   uefi_call_wrapper ConOut, OutputString, ConOut, string
-
-  mov rax, rsp
-  call print_rax
   
   call hvm_init
   mov rbx, rax
@@ -59,6 +59,7 @@ main:
   mov [rsp], rcx
 
   call ext_welcome
+
 
 .loopy:
   mov rcx, [rsp]
@@ -75,7 +76,6 @@ main:
   mov rdx, EFI_NOT_READY
   sub rdx, rax
   jz .poll
-  call print_rax
   add rsp, 16
 
 
@@ -84,6 +84,7 @@ main:
   jc .all_reduced
 
   mov rcx, [rsp]
+  print_msg_volatile "Will reduce", .msg0
   call hvm_interact
 
   jmp .loopy
@@ -96,7 +97,6 @@ main:
   mov rdx, EFI_NOT_READY
   sub rdx, rax
   jz @b
-  call print_rax
   add rsp, 16
 
 
